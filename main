@@ -29,7 +29,7 @@ with open(map_file, "wb") as file:
     file.write(response.content)
 
 pygame.init()
-pygame.display.set_caption('Перетаскивание')
+pygame.display.set_caption('Maps-API')
 size = width, height = 600, 450
 screen = pygame.display.set_mode(size)
 
