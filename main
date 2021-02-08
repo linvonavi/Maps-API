@@ -28,7 +28,6 @@ map_file = "map.png"
 with open(map_file, "wb") as file:
     file.write(response.content)
 
-# Удаляем за собой файл с изображение
 pygame.init()
 pygame.display.set_caption('Перетаскивание')
 size = width, height = 600, 450
