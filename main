@@ -59,12 +59,10 @@ while running:
             if event.key == pygame.K_PAGEUP:
                 if z != "17":
                     z = str(int(z) + 1)
-                    os.remove(map_file)
                     map_file = resp(lon, lat, z, type)
             if event.key == pygame.K_PAGEDOWN:
                 if z != "0":
                     z = str(int(z) - 1)
-                    os.remove(map_file)
                     map_file = resp(lon, lat, z, type)
 
 
