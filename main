@@ -7,7 +7,7 @@ import requests
 api_server = "http://static-maps.yandex.ru/1.x/"
 
 lon = "135"
-lat = "-28"
+lat = "-80"
 delta = "20"
 type = 'sat'#'map'
 
@@ -28,16 +28,25 @@ map_file = "map.png"
 with open(map_file, "wb") as file:
     file.write(response.content)
 
-# Инициализируем pygame
+# Удаляем за собой файл с изображение
 pygame.init()
-screen = pygame.display.set_mode((600, 450))
-# Рисуем картинку, загружаемую из только что созданного файла.
-screen.blit(pygame.image.load(map_file), (0, 0))
-# Переключаем экран и ждем закрытия окна.
-pygame.display.flip()
-while pygame.event.wait().type != pygame.QUIT:
-    pass
+pygame.display.set_caption('Перетаскивание')
+size = width, height = 600, 450
+screen = pygame.display.set_mode(size)
+
+
+running = True
+fps = 60
+clock = pygame.time.Clock()
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    screen.blit(pygame.image.load(map_file), (0, 0))
+    pygame.display.flip()
+
+    clock.tick(fps)
 pygame.quit()
 
-# Удаляем за собой файл с изображением.
 os.remove(map_file)
