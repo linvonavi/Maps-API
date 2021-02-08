@@ -4,19 +4,18 @@ import sys
 import pygame
 import requests
 
-def resp(lon, lat, delta, type):
+def resp(lon, lat, z, type):
     api_server = "http://static-maps.yandex.ru/1.x/"
-
 
     params = {
         "ll": ",".join([lon, lat]),
-        "spn": ",".join([delta, delta]),
-        "l": type
+        "z": z,
+        "l": type,
     }
     response = requests.get(api_server, params=params)
     if not response:
         print("Ошибка выполнения запроса:")
-        print(map_request)
+        print(response)
         print("Http статус:", response.status_code, "(", response.reason, ")")
         sys.exit(1)
 
@@ -27,9 +26,9 @@ def resp(lon, lat, delta, type):
     return map_file
 
 
-lon = "135"
-lat = "-0"
-delta = "50"
+lon = "40"
+lat = "50"
+z = "12"
 type = 'sat'
 
 pygame.init()
@@ -37,7 +36,7 @@ pygame.display.set_caption('Maps-API')
 size = width, height = 700, 450
 screen = pygame.display.set_mode(size)
 
-map_file = resp(lon, lat, delta, type)
+map_file = resp(lon, lat, z, type)
 running = True
 fps = 60
 clock = pygame.time.Clock()
@@ -49,13 +48,24 @@ while running:
             if 610<event.pos[0]<690:
                 if 300<event.pos[1]<330:
                     type = 'map'
-                    map_file = resp(lon, lat, delta, type)
+                    map_file = resp(lon, lat, z, type)
                 if 350<event.pos[1]<380:
                     type = 'sat'
-                    map_file = resp(lon, lat, delta, type)
+                    map_file = resp(lon, lat, z, type)
                 if 400<event.pos[1]<430:
                     type = 'sat,skl'
-                    map_file = resp(lon, lat, delta, type)
+                    map_file = resp(lon, lat, z, type)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_PAGEUP:
+                if z != "17":
+                    z = str(int(z) + 1)
+                    os.remove(map_file)
+                    map_file = resp(lon, lat, z, type)
+            if event.key == pygame.K_PAGEDOWN:
+                if z != "0":
+                    z = str(int(z) - 1)
+                    os.remove(map_file)
+                    map_file = resp(lon, lat, z, type)
 
 
     screen.fill((0,0, 150))
